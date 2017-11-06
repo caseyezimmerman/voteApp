@@ -26,12 +26,13 @@ router.get('/', function(req,res,next){
 	if(req.session.name != undefined){
 		console.log(`welcome ${req.session.name}`)
 	}
+
 	
-	var selectQuery = 'SELECT * FROM users;';
+	var sel5ectQuery = 'SELECT * FROM images;';
 	connection.query(selectQuery,(error,results,field)=>{
-		console.log(error);
+		var rand = Math.floor(Math.random() * results.length);
 		res.render('index',{
-			results:results,
+			results:results[rand],
 			name: req.session.name
 		});
 	})
