@@ -4,11 +4,20 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+//get the condig file so we have the secret for session
+var config = require('./config/config');
+//get the express-session module
+var session = require('express-session')
 
 var index = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
+app.use(session({
+	secret: config.sessionSalt,
+	resave: false,
+	saveUninitialized: true
+})) //////****this creates req.session for us
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
