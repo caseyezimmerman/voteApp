@@ -23,12 +23,13 @@ connection.connect((error)=>{
 // });
 
 router.get('/', function(req,res,next){
-	if(req.session.name != undefined){
-		console.log(`welcome ${req.session.name}`)
+	if(req.session.name === undefined){
+		res.redirect('/login?msg=mustlogin')
+		return;
 	}
 
 	
-	var sel5ectQuery = 'SELECT * FROM images;';
+	var selectQuery = 'SELECT * FROM images;';
 	connection.query(selectQuery,(error,results,field)=>{
 		var rand = Math.floor(Math.random() * results.length);
 		res.render('index',{
@@ -93,14 +94,30 @@ router.post('/loginProcess', (req,res,next)=>{
 				if (passwordMatch){
 					// user is in the db, password is right...log them in
 					req.session.name = results[0].name;
-					req.session.id = results[0].id;
+					req.session.uid = results[0].id;
 					req.session.email = results[0].email;
+					console.log(results[0])
+					console.log(req.session.id)
 					res.redirect('/')
 				}else{
 					// user is in db..but password isnt correct..send them back to login
 					res.redirect('/login?msg=badpassword')
 				}
 			}
+		}
+	})
+})
+
+router.get('/vote/:direction/:imageId',(req,res,)=>{
+	// res.json(req.params)
+	var imageId = req.params.imageId;
+	var direction = req.params.direction;
+	var insertVoteQuery = `INSERT INTO votes (imgID, voteDirection, userID) VALUES(?,?,?);`;
+	connection.query(insertVoteQuery,[imageId,direction,req.session.uid],(error,results)=>{
+		if(error){
+			throw error
+		}else{
+			res.redirect('/')
 		}
 	})
 })

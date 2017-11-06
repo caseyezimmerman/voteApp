@@ -19,9 +19,17 @@
 			<% } %>
 		</div>
 	</div>
-	<div>		
-		<p><%= results.title %></p>
-		<img src="/images/<%=results.imageUrl %>" />	
+	<div>	
+		<h2>Cute or Nah?</h2>	
+		
+		<div class="col-sm-6 col-sm-offset-3 image text-center">
+			<h4><%= results.title %></h4>
+			<img src="/images/<%=results.imageUrl %>" />
+		</div>	
+		<div class="col-sm-6 col-sm-offset-3 text-center">
+			<a href='/vote/1/<%=results.id%>'><button class="btn btn-success">Cute!!</button></a>
+			<a href='/vote/-1/<%=results.id%>'><button class="btn btn-danger">Nahhh</button></a>
+		</div>
 	</div>
 
 	
