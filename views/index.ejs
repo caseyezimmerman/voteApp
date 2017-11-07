@@ -5,7 +5,7 @@
 
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
-	
+	<link rel="stylesheet" type="text/css" href="./stylesheets/style.css">
 
 
 </head>
@@ -14,21 +14,29 @@
 	<div class="container-fluid">
 		<div class="row">
 			<% include navbar %>
+
+			<script type="text/javascript">
+				$(document).ready(()=>{
+					$('.reg-link').hide()
+					$('.login-link').hide()
+				})
+			</script>
+
 			<% if(name !== undefined){ %>
 				<h1>Welcome, <%=name%></h1>
 			<% } %>
 		</div>
 	</div>
 	<div>	
-		<h2>Cute or Nah?</h2>	
-		
-		<div class="col-sm-6 col-sm-offset-3 image text-center">
-			<h4><%= results.title %></h4>
-			<img src="/images/<%=results.imageUrl %>" />
-		</div>	
-		<div class="col-sm-6 col-sm-offset-3 text-center">
-			<a href='/vote/1/<%=results.id%>'><button class="btn btn-success">Cute!!</button></a>
-			<a href='/vote/-1/<%=results.id%>'><button class="btn btn-danger">Nahhh</button></a>
+	<h2>Cute or Nah?</h2>	
+		<div class="borders">
+			<div class="col-sm-6 col-sm-offset-3 images text-center">
+				<img src="/images/<%=results.imageUrl %>" />
+			</div>	
+			<div class="col-sm-6 col-sm-offset-3 buttons text-center">
+				<a href='/vote/1/<%=results.id%>'><button class="btn btn-success">Cute!!</button></a>
+				<a href='/vote/-1/<%=results.id%>'><button class="btn btn-danger">Nahhh</button></a>
+			</div>
 		</div>
 	</div>
 

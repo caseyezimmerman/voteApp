@@ -28,20 +28,41 @@ router.get('/', function(req,res,next){
 		return;
 	}
 
-	
-	var selectQuery = 'SELECT * FROM images;';
-	connection.query(selectQuery,(error,results,field)=>{
+	//we want to select all the image that the user has not voted on
+	var selectQuery = `
+		SELECT * FROM images WHERE id NOT IN(
+			SELECT imgID FROM votes WHERE userID = ?
+		);
+	`
+	// var selectQuery = 'SELECT * FROM images;';
+	connection.query(selectQuery,[req.session.uid],(error,results,field)=>{
 		var rand = Math.floor(Math.random() * results.length);
+		if(results.length == 0){
+		res.render('standings')
+		}else{
 		res.render('index',{
 			results:results[rand],
-			name: req.session.name
+			name: req.session.name,
+			loggedIn: true
 		});
+	}
 	})
+	
 })
 
 router.get('/register',(req,res,next)=>{
-	res.render('register',{})
+	// if(req.session.name != undefined){
+		// res.redirect('/?msg=alreadyloggedin')
+		res.render('register',{})
+	
 })
+
+router.get('/logout',(req,res)=>{
+	req.session.destroy();
+	res.redirect('/login');
+})
+
+
 
 router.post('/registerProcess', (req,res,next)=>{
 	// res.json(req.body);
